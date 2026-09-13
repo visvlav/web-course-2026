@@ -8,8 +8,8 @@
 body {
     font-family: system-ui, sans-serif;
     line-height: 1.6;
-    color: #1e293b;
-    background: #f8fafc;
+    color: #0a1a3c;
+    background: #eef2f9;
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
@@ -17,8 +17,8 @@ body {
 
 /* ===== HEADER ===== */
 header {
-    background: #0c1a2e;
-    color: #f1f5f9;
+    background: #001845;
+    color: #e6ecf7;
     padding: 30px 20px;
     border-radius: 12px;
     margin-bottom: 20px;
@@ -35,7 +35,7 @@ header img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 3px solid #3b82f6;
+    border: 3px solid #1e3a8a;
 }
 
 header h1 {
@@ -44,12 +44,12 @@ header h1 {
 
 header p:first-of-type {
     font-size: 18px;
-    color: #94a3b8;
+    color: #a8b6d4;
 }
 
 header p:last-of-type {
     font-style: italic;
-    color: #cbd5e1;
+    color: #cdd7ea;
 }
 
 /* ===== NAV ===== */
@@ -62,11 +62,11 @@ nav {
     padding: 12px 20px;
     border-radius: 10px;
     margin-bottom: 25px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 24, 69, 0.08);
 }
 
 nav a {
-    color: #1e293b;
+    color: #001845;
     text-decoration: none;
     font-weight: 500;
     padding: 4px 0;
@@ -74,8 +74,8 @@ nav a {
 }
 
 nav a:hover {
-    color: #3b82f6;
-    border-bottom-color: #3b82f6;
+    color: #1e3a8a;
+    border-bottom-color: #1e3a8a;
 }
 
 /* ===== MAIN ===== */
@@ -89,15 +89,16 @@ section {
     background: white;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    border: 1px solid #eef2f6;
+    box-shadow: 0 2px 4px rgba(0, 24, 69, 0.06);
+    border: 1px solid #dbe2f0;
 }
 
 h2 {
     font-size: 22px;
     margin-bottom: 15px;
     padding-left: 15px;
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid #001845;
+    color: #001845;
 }
 
 /* ===== ABOUT ===== */
@@ -109,7 +110,7 @@ article {
 
 article p {
     font-size: 16px;
-    color: #334155;
+    color: #1e2b4a;
 }
 
 /* ===== EDUCATION ===== */
@@ -126,17 +127,18 @@ ul li {
     align-items: baseline;
     gap: 10px 15px;
     padding: 8px 12px;
-    background: #f1f5f9;
+    background: #e8edf7;
     border-radius: 8px;
 }
 
 ul li span {
     font-weight: 700;
-    background: #e2e8f0;
+    background: #d3dcee;
     padding: 0 12px;
     border-radius: 12px;
     font-size: 14px;
     white-space: nowrap;
+    color: #001845;
 }
 
 /* ===== SKILLS ===== */
@@ -148,32 +150,34 @@ section#skills div {
 }
 
 section#skills span {
-    background: #eef2ff;
+    background: #e8edf7;
     padding: 6px 18px;
     border-radius: 50px;
     font-weight: 500;
     font-size: 15px;
-    border: 1px solid #c7d2fe;
-    transition: background 0.2s;
+    border: 1px solid #b3c0dd;
+    color: #001845;
+    transition: background 0.2s, color 0.2s;
 }
 
 section#skills span:hover {
-    background: #c7d2fe;
+    background: #001845;
+    color: #e6ecf7;
 }
 
 /* ===== FOOTER ===== */
 footer {
     margin-top: 30px;
-    background: #0c1a2e;
-    color: #e2e8f0;
+    background: #001845;
+    color: #dbe2f0;
     padding: 25px 20px;
     border-radius: 12px;
     text-align: center;
 }
 
 footer h2 {
-    border-left-color: #3b82f6;
-    color: #f1f5f9;
+    border-left-color: #1e3a8a;
+    color: #e6ecf7;
     padding-left: 15px;
     text-align: left;
     margin-bottom: 15px;
@@ -188,7 +192,7 @@ footer div {
 }
 
 footer a {
-    color: #cbd5e1;
+    color: #c3cee6;
     text-decoration: none;
     padding: 4px 10px;
     border-radius: 6px;
@@ -196,13 +200,13 @@ footer a {
 
 footer a:hover {
     color: white;
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(30, 58, 138, 0.45);
     text-decoration: underline;
 }
 
 footer p {
-    color: #64748b;
+    color: #7a89ad;
     font-size: 14px;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #0a2559;
     padding-top: 12px;
 }
