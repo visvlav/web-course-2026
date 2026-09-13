@@ -37,7 +37,7 @@ header img {
     border-radius: 50%;
     border: 3px solid #040c23;
     object-fit: cover;      
-    object-position: center; 
+    object-position: center top; 
     display: block;          
 }
 
@@ -179,7 +179,7 @@ footer {
 }
 
 footer h2 {
-    border-left-color: #1e3a8a;
+    border-left-color: #040c23;
     color: #e6ecf7;
     padding-left: 15px;
     text-align: left;
