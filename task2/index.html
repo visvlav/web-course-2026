@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Summer Drive — A No-Work Work-Event</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ШАПКА / ГЕРОЙ -->
+  <header class="hero" id="top">
+    <div class="container">
+
+      <div class="hero__top">
+        <span class="hero__date">DATE <strong>06.24.21</strong></span>
+        <span class="hero__time">TIME <strong>5-10 PM</strong></span>
+      </div>
+
+      <h1 class="hero__title">
+        <span class="hero__title-line">THE SUMMER</span>
+        <span class="hero__title-line">DRIVE</span>
+      </h1>
+
+      <p class="hero__subtitle">
+        A NO-WORK, WORK-EVENT FOR TEAMS IN THE DRIVE CAPITAL PORTFOLIO
+      </p>
+
+      <!-- Гамбургер для мобильного -->
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+
+      <div class="hero__cards">
+
+        <div class="hero__card">
+          <p class="hero__card-label">WE RENTED IT OUT</p>
+          <h2 class="hero__card-title">STANDARD HALL</h2>
+          <a href="#tickets" class="btn">TICKETS</a>
+        </div>
+
+        <div class="hero__car">
+          <img src="img/car.jpg" alt="Ретро-кабриолет" onerror="this.replaceWith('🚗')">
+        </div>
+
+        <div class="hero__card">
+          <p class="hero__card-label">YOU'RE INVITED</p>
+          <h2 class="hero__card-title">RESERVE NOW</h2>
+          <a href="#tickets" class="btn">TICKETS</a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ПОДНАВИГАЦИЯ -->
+  <nav class="subnav" aria-label="Что вас ждёт">
+    <div class="container">
+      <label for="nav-toggle" class="subnav__burger" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </label>
+
+      <ul class="subnav__list">
+        <li><a href="#story" class="subnav__link">DINNER</a></li>
+        <li><a href="#story" class="subnav__link">DRINKS</a></li>
+        <li><a href="#story" class="subnav__link">DJ</a></li>
+        <li><a href="#schedule" class="subnav__link">DUNK TANK</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ОСНОВНОЙ ТЕКСТ -->
+  <section class="story" id="story">
+    <div class="container">
+      <h2 class="story__title">IT’S BEEN A LONG<br>15 MONTHS</h2>
+
+      <div class="story__text">
+        <p>
+          There’s no doubt about that. Countless people, families, teams, and
+          communities sacrificed to get through it.
+        </p>
+        <p>
+          We want to say “thank you,” and treat you to a fun, no-work work-event
+          where we can finally be together, safely. A celebration of inoculation!
+          See your team. Meet folks from other teams. Eat. Drink. Enjoy. All IRL.
+        </p>
+        <p>
+          So grab your shades, because the “light at the end of the tunnel” we’ve
+          been squinting at is now a giant ball of sunshine (okay the metaphor
+          needs work but you get it).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЛОГОТИПЫ -->
+  <section class="sponsors">
+    <div class="container">
+      <ul class="sponsors__list">
+        <li class="sponsors__item">battleface</li>
+        <li class="sponsors__item">beam</li>
+        <li class="sponsors__item">CIRCULO</li>
+        <li class="sponsors__item">do media</li>
+        <li class="sponsors__item">Drive Capital</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- РАСПИСАНИЕ -->
+  <section class="schedule" id="schedule">
+    <div class="container schedule__grid">
+
+      <h2 class="schedule__title">DUNK TANK<br>SCHEDULE:</h2>
+
+      <table class="schedule__table">
+        <tbody>
+          <tr><td class="schedule__name">SASHA GAIRULIN</td><td class="schedule__company">BATTLEFACE</td><td class="schedule__time">6:00</td></tr>
+          <tr><td class="schedule__name">BRADEN LAMBROS</td><td class="schedule__company">OLIVE</td><td class="schedule__time">6:20</td></tr>
+          <tr><td class="schedule__name">ANDY LONSBERRY</td><td class="schedule__company">PATH</td><td class="schedule__time">6:40</td></tr>
+          <tr><td class="schedule__name">SEAN LANE IN A TUXEDO</td><td class="schedule__company">OLIVE</td><td class="schedule__time">7:00</td></tr>
+          <tr><td class="schedule__name">OLIVIA WEINSTOCK</td><td class="schedule__company">TANDEM</td><td class="schedule__time">7:20</td></tr>
+          <tr><td class="schedule__name">MARK KVAMME AND CHRIS OLSEN</td><td class="schedule__company">DRIVE CAPITAL</td><td class="schedule__time">7:40</td></tr>
+          <tr><td class="schedule__name">PAUL POWERS</td><td class="schedule__company">PHYSNA</td><td class="schedule__time">8:00</td></tr>
+          <tr><td class="schedule__name">MATT WYCHORHOUSE</td><td class="schedule__company">FINITE STATE</td><td class="schedule__time">8:20</td></tr>
+          <tr><td class="schedule__name">CALVIN COOPER</td><td class="schedule__company">RHOVE</td><td class="schedule__time">8:40</td></tr>
+          <tr><td class="schedule__name">ALEX FROMMEYER</td><td class="schedule__company">BEAM</td><td class="schedule__time">9:00</td></tr>
+          <tr><td class="schedule__name">JAYSSON EICHOLTZ</td><td class="schedule__company">FORGE</td><td class="schedule__time">9:20</td></tr>
+          <tr><td class="schedule__name">KEL GUERIN</td><td class="schedule__company">READY ROBOTICS</td><td class="schedule__time">9:40</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <!-- ФУТЕР -->
+  <footer class="footer" id="tickets">
+    <div class="container footer__inner">
+      <p class="footer__item">PRESENTED BY DRIVE CAPITAL</p>
+      <p class="footer__item">© 2021</p>
+      <p class="footer__item">BUILT BY STUDIO FREIGHT</p>
+    </div>
+  </footer>
+
+</body>
+</html>
