@@ -11,9 +11,9 @@
 
   --accent: #a89e8f;
   --accent-dark: #8c8273;
-  --filter-all: #8a837a;          
-  --filter-active: #c9a86a;       
-  --filter-completed: #7fa588;    
+  --filter-all: #b7a185;          
+  --filter-active: #2f8d35;       
+  --filter-completed: #8b282f;    
 
   --danger: #b58a7e;
   --danger-dark: #9c7166;
@@ -162,7 +162,6 @@ h1 {
   box-shadow: 0 3px 8px rgba(74, 69, 63, 0.18);
 }
 
-/* Разные цвета под каждый фильтр */
 .filter-btn[data-filter="all"].active {
   background: var(--filter-all);
 }
