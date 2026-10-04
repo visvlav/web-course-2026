@@ -8,17 +8,23 @@
 </head>
 <body>
   <main class="game">
-    <h1>Быки и коровы</h1>
+    <h1> Быки и коровы </h1>
     <p class="rules">
       Компьютер загадал 4 цифры без повторов. Введите 4 разные цифры и нажмите «Проверить».
     </p>
+
+    <!-- Счётчик попыток по центру -->
+    <div class="counter">
+      <span class="counter-label">Попыток</span>
+      <span class="counter-value" id="attemptsCount">0</span>
+    </div>
 
     <div class="controls">
       <input
         type="text"
         id="guessInput"
         maxlength="4"
-        placeholder="Например, 1234"
+        placeholder="1234"
         autocomplete="off"
         inputmode="numeric"
       >
@@ -26,11 +32,18 @@
       <button id="newGameBtn">Новая игра</button>
     </div>
 
+    <!-- Чекбокс "подсмотреть" -->
+    <label class="peek">
+      <input type="checkbox" id="peekCheckbox">
+      <span>Подсмотреть загаданное число</span>
+    </label>
+
+    <p id="secretView" class="secret-view"></p>
+
     <p id="message" class="message"></p>
-    <p class="attempts">Попыток: <span id="attemptsCount">0</span></p>
 
     <h2>История</h2>
-    <ul id="historyList"></ul>
+    <ul id="historyList" class="history"></ul>
   </main>
 
   <script src="script.js" defer></script>

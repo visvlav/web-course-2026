@@ -1,0 +1,253 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1f2937;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.game {
+  width: 100%;
+  max-width: 620px;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+h1 {
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 28px;
+  color: #4c1d95;
+}
+
+h2 {
+  margin: 24px 0 12px;
+  font-size: 20px;
+  color: #4c1d95;
+}
+
+.rules {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* ==== Счётчик по центру ==== */
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  width: 120px;
+  padding: 12px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #7c2d12;
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.counter-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  opacity: 0.85;
+}
+
+.counter-value {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+/* ==== Поле и кнопки ==== */
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+input[type="text"] {
+  flex: 1 1 160px;
+  padding: 12px 14px;
+  font-size: 20px;
+  font-family: monospace;
+  letter-spacing: 6px;
+  text-align: center;
+  border: 2px solid #c7d2fe;
+  border-radius: 12px;
+  background: #f8fafc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+input[type="text"]:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
+  transition: transform 0.1s, box-shadow 0.2s, opacity 0.2s;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.45);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#newGameBtn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 6px 14px rgba(5, 150, 105, 0.35);
+}
+
+#newGameBtn:hover:not(:disabled) {
+  box-shadow: 0 10px 20px rgba(5, 150, 105, 0.45);
+}
+
+/* ==== Чекбокс "подсмотреть" ==== */
+.peek {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 4px 0 8px;
+  font-size: 14px;
+  color: #6b7280;
+  user-select: none;
+  cursor: pointer;
+}
+
+.peek input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #a5b4fc;
+  border-radius: 6px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.peek input[type="checkbox"]:checked {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+.peek input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+.secret-view {
+  min-height: 22px;
+  margin: 0 0 8px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* ==== Сообщения ==== */
+.message {
+  min-height: 26px;
+  margin: 8px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.message.error {
+  color: #dc2626;
+}
+
+.message.success {
+  color: #16a34a;
+}
+
+/* ==== История ==== */
+.history {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.history li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  background: #eef2ff;
+  border-left: 5px solid #6366f1;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 16px;
+  animation: slideIn 0.25s ease;
+}
+
+.history li.win {
+  background: #dcfce7;
+  border-left-color: #16a34a;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

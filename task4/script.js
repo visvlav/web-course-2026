@@ -1,123 +1,127 @@
 "use strict";
 
 // ==== Состояние игры ====
-let secretNumber = [];       // массив цифр, например ['1','2','3','4']
-let history = [];            // массив объектов: { guess: "1234", bulls: 1, cows: 2 }
-let attempts = 0;            // количество попыток
-let isGameOver = false;      // завершена ли игра
+let secretNumber = [];
+let history = [];
+let attempts = 0;
+let isGameOver = false;
 
-// ==== Ссылки на DOM-элементы ====
+// ==== Ссылки на DOM ====
 const guessInput = document.getElementById("guessInput");
 const checkBtn = document.getElementById("checkBtn");
 const newGameBtn = document.getElementById("newGameBtn");
 const messageEl = document.getElementById("message");
 const attemptsCountEl = document.getElementById("attemptsCount");
 const historyList = document.getElementById("historyList");
+const peekCheckbox = document.getElementById("peekCheckbox");
+const secretView = document.getElementById("secretView");
 
-// ==== Генерация загаданного числа ====
+// ==== Генерация числа ====
 function generateSecretNumber() {
-  const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const digits = ["0","1","2","3","4","5","6","7","8","9"];
   const result = [];
 
   while (result.length < 4) {
-    const randomIndex = Math.floor(Math.random() * digits.length);
-    const digit = digits[randomIndex];
-
-    // проверяем, что такой цифры ещё нет
+    const idx = Math.floor(Math.random() * digits.length);
+    const digit = digits[idx];
     if (!result.includes(digit)) {
       result.push(digit);
     }
   }
-
   return result;
 }
 
-// ==== Валидация ввода ====
+// ==== Валидация ====
 function validateInput(value) {
-  // ровно 4 символа, и все они — цифры
   if (!/^\d{4}$/.test(value)) {
-    return {
-      isValid: false,
-      error: "Введите ровно 4 цифры (только цифры, без букв и символов)."
-    };
+    return { isValid: false, error: "Введите ровно 4 цифры (только цифры, без букв и символов)." };
   }
-
   const digits = value.split("");
-
-  // проверяем, что все цифры разные
-  const uniqueDigits = new Set(digits);
-  if (uniqueDigits.size !== 4) {
-    return {
-      isValid: false,
-      error: "Все 4 цифры должны быть разными."
-    };
+  if (new Set(digits).size !== 4) {
+    return { isValid: false, error: "Все 4 цифры должны быть разными." };
   }
-
   return { isValid: true, digits };
 }
 
-// ==== Подсчёт быков и коров ====
+// ==== Быки и коровы ====
 function countBullsAndCows(secret, guess) {
   let bulls = 0;
   let cows = 0;
 
   for (let i = 0; i < secret.length; i++) {
     if (secret[i] === guess[i]) {
-      // цифра на своём месте
       bulls++;
     } else if (secret.includes(guess[i])) {
-      // цифра есть в секрете, но не на этом месте
       cows++;
     }
   }
-
   return { bulls, cows };
 }
 
-// ==== Склонение слов (для красоты) ====
+// ==== Склонения ====
 function getBullWord(n) {
-  const n10 = n % 10;
-  const n100 = n % 100;
+  const n10 = n % 10, n100 = n % 100;
   if (n10 === 1 && n100 !== 11) return "бык";
   if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return "быка";
   return "быков";
 }
 
 function getCowWord(n) {
-  const n10 = n % 10;
-  const n100 = n % 100;
+  const n10 = n % 10, n100 = n % 100;
   if (n10 === 1 && n100 !== 11) return "корова";
   if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return "коровы";
   return "коров";
 }
 
-// ==== Отрисовка истории из массива ====
+// ==== Рендер истории ====
 function renderHistory() {
   historyList.innerHTML = "";
 
   history.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = `${item.guess} → ${item.bulls} ${getBullWord(item.bulls)}, ${item.cows} ${getCowWord(item.cows)}`;
+
+    const left = document.createElement("span");
+    left.textContent = item.guess;
+
+    const right = document.createElement("span");
+    right.textContent = `${item.bulls} ${getBullWord(item.bulls)}, ${item.cows} ${getCowWord(item.cows)}`;
+
+    li.appendChild(left);
+    li.appendChild(right);
+
+    if (item.bulls === 4) {
+      li.classList.add("win");
+    }
+
     historyList.appendChild(li);
   });
 }
 
-// ==== Обновление счётчика попыток ====
+// ==== Обновление счётчика ====
 function updateAttempts() {
   attemptsCountEl.textContent = attempts;
 }
 
-// ==== Сообщение пользователю ====
+// ==== Сообщение ====
 function showMessage(text, type = "") {
   messageEl.textContent = text;
   messageEl.className = "message" + (type ? " " + type : "");
 }
 
-// ==== Основная проверка попытки ====
-function checkGuess() {
-  if (isGameOver) {
-    return;
+// ==== Обновление "подсмотренного" числа ====
+function updateSecretView() {
+  if (peekCheckbox.checked && !isGameOver) {
+    secretView.textContent = secretNumber.join(" ");
+  } else if (peekCheckbox.checked && isGameOver) {
+    secretView.textContent = secretNumber.join(" ");
+  } else {
+    secretView.textContent = "";
   }
+}
+
+// ==== Проверка попытки ====
+function checkGuess() {
+  if (isGameOver) return;
 
   const rawValue = guessInput.value.trim();
   const validation = validateInput(rawValue);
@@ -131,11 +135,7 @@ function checkGuess() {
   const { bulls, cows } = countBullsAndCows(secretNumber, guessDigits);
 
   attempts++;
-  history.push({
-    guess: rawValue,
-    bulls,
-    cows
-  });
+  history.push({ guess: rawValue, bulls, cows });
 
   updateAttempts();
   renderHistory();
@@ -148,6 +148,7 @@ function checkGuess() {
     showMessage(`Победа! Угадано за ${attempts} попыток.`, "success");
     guessInput.disabled = true;
     checkBtn.disabled = true;
+    updateSecretView();
   } else {
     showMessage(`Быков: ${bulls}, коров: ${cows}`);
   }
@@ -163,25 +164,25 @@ function newGame() {
   guessInput.disabled = false;
   checkBtn.disabled = false;
   guessInput.value = "";
+  peekCheckbox.checked = false;
+
   showMessage("");
   updateAttempts();
   renderHistory();
+  updateSecretView();
   guessInput.focus();
-
-  // Для отладки можно посмотреть загаданное число в консоли:
-  // console.log("Загадано:", secretNumber.join(""));
 }
 
-// ==== Обработчики событий ====
+// ==== Обработчики ====
 checkBtn.addEventListener("click", checkGuess);
-
 newGameBtn.addEventListener("click", newGame);
 
 guessInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    checkGuess();
-  }
+  if (event.key === "Enter") checkGuess();
 });
 
-// ==== Старт игры ====
+// ==== Чекбокс "подсмотреть" ====
+peekCheckbox.addEventListener("change", updateSecretView);
+
+// ==== Старт ====
 newGame();
