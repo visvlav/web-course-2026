@@ -1,12 +1,9 @@
 "use strict";
+let secretNumber = [];  
+let history = [];       
+let attempts = 0;       
+let isGameOver = false;  
 
-// ==== Состояние игры ====
-let secretNumber = [];   // массив цифр загаданного числа
-let history = [];        // массив объектов { guess, bulls, cows }
-let attempts = 0;        // количество попыток
-let isGameOver = false;  // завершена ли игра
-
-// ==== Ссылки на DOM ====
 const guessInput      = document.getElementById("guessInput");
 const checkBtn        = document.getElementById("checkBtn");
 const newGameBtn      = document.getElementById("newGameBtn");
@@ -16,7 +13,6 @@ const historyList     = document.getElementById("historyList");
 const peekCheckbox    = document.getElementById("peekCheckbox");
 const secretView      = document.getElementById("secretView");
 
-// ==== Генерация загаданного числа ====
 function generateSecretNumber() {
   const digits = ["0","1","2","3","4","5","6","7","8","9"];
   const result = [];
@@ -30,8 +26,6 @@ function generateSecretNumber() {
   }
   return result;
 }
-
-// ==== Валидация ввода ====
 function validateInput(value) {
   if (!/^\d{4}$/.test(value)) {
     return {
@@ -50,8 +44,6 @@ function validateInput(value) {
 
   return { isValid: true, digits };
 }
-
-// ==== Подсчёт быков и коров ====
 function countBullsAndCows(secret, guess) {
   let bulls = 0;
   let cows  = 0;
@@ -67,7 +59,6 @@ function countBullsAndCows(secret, guess) {
   return { bulls, cows };
 }
 
-// ==== Склонения ====
 function getBullWord(n) {
   const n10 = n % 10, n100 = n % 100;
   if (n10 === 1 && n100 !== 11) return "бык";
@@ -82,7 +73,6 @@ function getCowWord(n) {
   return "коров";
 }
 
-// ==== Рендер истории ====
 function renderHistory() {
   historyList.innerHTML = "";
 
@@ -110,25 +100,21 @@ function renderHistory() {
   });
 }
 
-// ==== Счётчик ====
 function updateAttempts() {
   attemptsCountEl.textContent = attempts;
 }
 
-// ==== Сообщение ====
 function showMessage(text, type = "") {
   messageEl.textContent = text;
   messageEl.className = "message" + (type ? " " + type : "");
 }
 
-// ==== Подсмотренное число ====
 function updateSecretView() {
   secretView.textContent = peekCheckbox.checked
     ? secretNumber.join(" ")
     : "";
 }
 
-// ==== Проверка попытки ====
 function checkGuess() {
   if (isGameOver) return;
 
@@ -162,7 +148,6 @@ function checkGuess() {
   }
 }
 
-// ==== Новая игра ====
 function newGame() {
   secretNumber = generateSecretNumber();
   history = [];
@@ -179,11 +164,8 @@ function newGame() {
   renderHistory();
   updateSecretView();
   guessInput.focus();
-
-  // console.log("Загадано:", secretNumber.join(""));
 }
 
-// ==== Обработчики ====
 checkBtn.addEventListener("click", checkGuess);
 newGameBtn.addEventListener("click", newGame);
 
@@ -192,6 +174,4 @@ guessInput.addEventListener("keydown", (event) => {
 });
 
 peekCheckbox.addEventListener("change", updateSecretView);
-
-// ==== Старт ====
 newGame();
