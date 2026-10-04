@@ -1,304 +1,369 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Caveat:wght@600&display=swap');
 
+/* ==== Базовые сбросы ==== */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    background: #0f1419;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    color: #c9d1d9;
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: #f3ebdd;
+  background-image:
+    radial-gradient(circle at 20% 10%, #fbf5e9 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, #efe1c8 0%, transparent 50%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  color: #4a4034;
+  line-height: 1.5;
 }
 
-.game-container {
-    background: #1a2129;
-    border: 1px solid #2d3748;
-    border-radius: 8px;
-    padding: 24px;
-    width: 100%;
-    max-width: 440px;
+/* ==== Карточка ==== */
+.card {
+  width: 100%;
+  max-width: 480px;
+  background: #fdfaf3;
+  border: 1px solid #e6d8bf;
+  border-radius: 20px;
+  padding: 28px 26px 24px;
+  box-shadow:
+    0 2px 4px rgba(120, 100, 70, 0.06),
+    0 20px 40px -20px rgba(120, 100, 70, 0.25);
+}
+
+/* ==== Заголовок ==== */
+.card__header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 h1 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #58a6ff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 40px;
+  font-weight: 600;
+  color: #8b6f47;
+  line-height: 1;
+  letter-spacing: 0.5px;
 }
 
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 14px;
+.subtitle {
+  font-size: 12px;
+  color: #b8a486;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 6px;
 }
 
-input {
-    width: 100%;
-    padding: 14px;
-    font-family: inherit;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 10px;
-    text-align: center;
-    color: #c9d1d9;
-    background: #0f1419;
-    border: 1px solid #2d3748;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.2s ease;
+/* ==== Правила игры ==== */
+.rules {
+  background: #f7f0e2;
+  border: 1px dashed #d9c8a6;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  font-size: 13px;
 }
 
-input:focus {
-    border-color: #58a6ff;
+.rules h2 {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: #a08558;
+  margin-bottom: 6px;
 }
 
-input:disabled {
-    color: #4a5568;
-    cursor: not-allowed;
+.rules p {
+  color: #6b5d47;
+  margin-bottom: 10px;
 }
 
-input::placeholder {
-    letter-spacing: normal;
-    color: #4a5568;
-    font-size: 14px;
-    font-weight: 400;
+.rules ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #6b5d47;
 }
 
-button {
-    padding: 12px 18px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-    border: 1px solid;
+.tag {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
 }
 
-#checkBtn {
-    background: #58a6ff;
-    color: #0f1419;
-    border-color: #58a6ff;
+.tag--bull {
+  background: #e3d3ab;
+  color: #7a5f2e;
 }
 
-#checkBtn:hover:not(:disabled) {
-    background: #79b8ff;
-    border-color: #79b8ff;
+.tag--cow {
+  background: #dfe4d1;
+  color: #5b6b45;
 }
 
-#newGameBtn {
-    background: transparent;
-    color: #58a6ff;
-    border-color: #2d3748;
+/* ==== Счётчик ==== */
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #f2e6cf;
+  border-radius: 14px;
+  margin-bottom: 18px;
 }
 
-#newGameBtn:hover {
-    border-color: #58a6ff;
+.counter__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #9c8663;
 }
 
-button:disabled {
-    background: #2d3748 !important;
-    color: #4a5568 !important;
-    border-color: #2d3748 !important;
-    cursor: not-allowed;
+.counter__value {
+  font-family: 'Caveat', cursive;
+  font-size: 34px;
+  font-weight: 600;
+  color: #8b6f47;
+  line-height: 1;
 }
 
-.message {
-    min-height: 22px;
-    margin: 10px 0;
-    font-size: 14px;
-    text-align: center;
+/* ==== Поле ввода + кнопка ==== */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.error {
-    color: #f85149;
+input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 8px;
+  text-align: center;
+  color: #4a4034;
+  background: #fbf6ec;
+  border: 2px solid #e6d8bf;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
 }
 
-.success {
-    color: #3fb950;
-    font-size: 15px;
-    padding: 10px;
-    background: rgba(63, 185, 80, 0.1);
-    border: 1px solid rgba(63, 185, 80, 0.3);
-    border-radius: 6px;
+input[type="text"]:focus {
+  border-color: #c9ad7c;
+  background: #fffdf8;
 }
 
-.stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: #0f1419;
-    border: 1px solid #2d3748;
-    border-radius: 6px;
-    margin-bottom: 18px;
-    font-size: 13px;
-    color: #8b949e;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+input[type="text"]::placeholder {
+  letter-spacing: normal;
+  font-size: 13px;
+  font-weight: 400;
+  color: #bfae91;
 }
 
-#attemptsCount {
-    font-weight: 700;
-    color: #58a6ff;
-    font-size: 16px;
-    letter-spacing: 0;
+input[type="text"]:disabled {
+  background: #efe7d8;
+  color: #a99981;
 }
 
-h3 {
-    font-size: 12px;
-    font-weight: 600;
-    color: #8b949e;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* ==== Кнопки ==== */
+.btn {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  white-space: nowrap;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    background: #0f1419;
-    border: 1px solid #2d3748;
-    border-radius: 6px;
-    scroll-behavior: smooth;
+.btn--primary {
+  background: #a98b5f;
+  color: #fffaf0;
+  box-shadow: 0 6px 14px -6px rgba(140, 110, 70, 0.55);
 }
 
-ul::-webkit-scrollbar {
-    width: 6px;
+.btn--primary:hover:not(:disabled) {
+  background: #96794f;
+  transform: translateY(-1px);
 }
 
-ul::-webkit-scrollbar-track {
-    background: #0f1419;
+.btn--ghost {
+  width: 100%;
+  margin-top: 6px;
+  background: transparent;
+  color: #8b6f47;
+  border-color: #e0cfa9;
 }
 
-ul::-webkit-scrollbar-thumb {
-    background: #2d3748;
-    border-radius: 3px;
+.btn--ghost:hover:not(:disabled) {
+  background: #f7f0e2;
+  border-color: #c9ad7c;
 }
 
-ul::-webkit-scrollbar-thumb:hover {
-    background: #4a5568;
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-li {
-    padding: 10px 14px;
-    border-bottom: 1px solid #1f2933;
-    font-size: 14px;
-    color: #c9d1d9;
-}
-
-li:last-child {
-    border-bottom: none;
-}
-
-ul:empty::after {
-    content: "нет попыток";
-    display: block;
-    padding: 20px;
-    text-align: center;
-    color: #4a5568;
-    font-size: 13px;
-    font-style: italic;
-}
-
-/* ===== Дополнения под этот проект ===== */
-
-/* строка истории: слева попытка, справа результат */
-li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-li .guess {
-    letter-spacing: 4px;
-    color: #58a6ff;
-    font-weight: 700;
-}
-
-li .result {
-    color: #8b949e;
-    font-size: 13px;
-}
-
-li.win {
-    background: rgba(63, 185, 80, 0.08);
-}
-
-li.win .guess {
-    color: #3fb950;
-}
-
-/* чекбокс "подсмотреть" */
+/* ==== Чекбокс ==== */
 .peek {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 6px 0 4px;
-    font-size: 12px;
-    color: #8b949e;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #9c8663;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 4px;
 }
 
 .peek input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #2d3748;
-    border-radius: 4px;
-    background: #0f1419;
-    position: relative;
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
-    padding: 0;
-    letter-spacing: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d9c8a6;
+  border-radius: 5px;
+  background: #fbf6ec;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .peek input[type="checkbox"]:checked {
-    background: #58a6ff;
-    border-color: #58a6ff;
+  background: #a98b5f;
+  border-color: #a98b5f;
 }
 
 .peek input[type="checkbox"]:checked::after {
-    content: "✔";
-    color: #0f1419;
-    font-size: 12px;
-    font-weight: 700;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 1;
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  color: #fffaf0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .secret-view {
-    min-height: 20px;
-    margin: 0 0 6px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 10px;
-    color: #f85149;
+  min-height: 20px;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 24px;
+  letter-spacing: 6px;
+  color: #b06a4b;
+  margin-bottom: 4px;
+}
+
+/* ==== Сообщение ==== */
+.message {
+  min-height: 24px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b5d47;
+  margin: 6px 0 12px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.message.error {
+  color: #a8503f;
+  background: #f6e0d6;
+}
+
+.message.success {
+  color: #556b2f;
+  background: #e7ecd6;
+  font-weight: 600;
+}
+
+/* ==== История ==== */
+.history h2 {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: #a08558;
+  margin-bottom: 8px;
+}
+
+.history ul {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #fbf6ec;
+  border: 1px solid #ecdfc6;
+}
+
+.history ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history ul::-webkit-scrollbar-thumb {
+  background: #e0cfa9;
+  border-radius: 3px;
+}
+
+.history li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0e6d2;
+  font-size: 13.5px;
+}
+
+.history li:last-child {
+  border-bottom: none;
+}
+
+.history li .guess {
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #8b6f47;
+}
+
+.history li .result {
+  font-size: 12.5px;
+  color: #8c7c62;
+}
+
+.history li.win {
+  background: #e7ecd6;
+}
+
+.history li.win .guess {
+  color: #556b2f;
+}
+
+.history ul:empty::after {
+  content: "пока пусто";
+  display: block;
+  padding: 18px;
+  text-align: center;
+  color: #bfae91;
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
 }

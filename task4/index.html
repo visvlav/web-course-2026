@@ -7,19 +7,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="game">
-    <h1> Быки и коровы </h1>
-    <p class="rules">
-      Компьютер загадал 4 цифры без повторов. Введите 4 разные цифры и нажмите «Проверить».
-    </p>
+  <main class="card">
+    <header class="card__header">
+      <h1>Быки и коровы</h1>
+      <p class="subtitle">угадай 4 цифры</p>
+    </header>
 
-    <!-- Счётчик попыток по центру -->
-    <div class="counter">
-      <span class="counter-label">Попыток</span>
-      <span class="counter-value" id="attemptsCount">0</span>
-    </div>
+    <section class="rules">
+      <h2>Правила</h2>
+      <p>
+        Компьютер загадал число из 4 <strong>разных</strong> цифр.
+        Введи свою версию — и узнай результат:
+      </p>
+      <ul>
+        <li><span class="tag tag--bull">бык</span> — цифра угадана и стоит на своём месте</li>
+        <li><span class="tag tag--cow">корова</span> — цифра есть, но не на этом месте</li>
+      </ul>
+    </section>
 
-    <div class="controls">
+    <section class="counter">
+      <span class="counter__label">Попыток</span>
+      <span class="counter__value" id="attemptsCount">0</span>
+    </section>
+
+    <section class="input-row">
       <input
         type="text"
         id="guessInput"
@@ -27,23 +38,25 @@
         placeholder="1234"
         autocomplete="off"
         inputmode="numeric"
+        aria-label="Введите 4 цифры"
       >
-      <button id="checkBtn">Проверить</button>
-      <button id="newGameBtn">Новая игра</button>
-    </div>
+      <button id="checkBtn" class="btn btn--primary">Проверить</button>
+    </section>
 
-    <!-- Чекбокс "подсмотреть" -->
     <label class="peek">
       <input type="checkbox" id="peekCheckbox">
       <span>Подсмотреть загаданное число</span>
     </label>
-
     <p id="secretView" class="secret-view"></p>
 
     <p id="message" class="message"></p>
 
-    <h2>История</h2>
-    <ul id="historyList" class="history"></ul>
+    <section class="history">
+      <h2>История</h2>
+      <ul id="historyList"></ul>
+    </section>
+
+    <button id="newGameBtn" class="btn btn--ghost">Новая игра</button>
   </main>
 
   <script src="script.js" defer></script>
