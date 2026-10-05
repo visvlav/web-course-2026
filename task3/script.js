@@ -20,7 +20,7 @@ function render() {
   const filteredTasks = tasks.filter(task => {
     if (currentFilter === 'active') return !task.completed;
     if (currentFilter === 'completed') return task.completed;
-    return true; // 'all'
+    return true; 
   });
 
   taskList.innerHTML = '';
