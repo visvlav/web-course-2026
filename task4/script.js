@@ -3,7 +3,7 @@ let secretNumber = [];
 let history = [];       
 let attempts = 0;       
 let isGameOver = false;  
-
+const MAX_ATTEMPTS = 8;
 const guessInput      = document.getElementById("guessInput");
 const checkBtn        = document.getElementById("checkBtn");
 const newGameBtn      = document.getElementById("newGameBtn");
@@ -143,7 +143,12 @@ function checkGuess() {
     showMessage(`Победа! Угадано за ${attempts} попыток.`, "success");
     guessInput.disabled = true;
     checkBtn.disabled = true;
-  } else {
+  }else if(attempts>MAX_ATTEMPTS){
+    isGameOver = true;
+    showMessage(`Проигрыш! Уже ${attempts} попыток. Загаданное число: ${secretNumber.join(" ")}`, "error");
+    guessInput.disabled = true;
+    checkBtn.disabled = true;
+  }else {
     showMessage(`Быков: ${bulls}, коров: ${cows}`);
   }
 }
