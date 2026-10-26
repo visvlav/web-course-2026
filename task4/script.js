@@ -17,7 +17,7 @@ function generateSecretNumber() {
   const digits = ["0","1","2","3","4","5","6","7","8","9"];
   const result = [];
 
-  while (result.length < 4) {
+  while (result.length < 6) {
     const idx = Math.floor(Math.random() * digits.length);
     const digit = digits[idx];
     if (!result.includes(digit)) {
@@ -27,18 +27,18 @@ function generateSecretNumber() {
   return result;
 }
 function validateInput(value) {
-  if (!/^\d{4}$/.test(value)) {
+  if (!/^\d{6}$/.test(value)) {
     return {
       isValid: false,
-      error: "Нужно ровно 4 цифры — без букв и символов."
+      error: "Нужно ровно 6 цифр — без букв и символов."
     };
   }
 
   const digits = value.split("");
-  if (new Set(digits).size !== 4) {
+  if (new Set(digits).size !== 6) {
     return {
       isValid: false,
-      error: "Все 4 цифры должны быть разными."
+      error: "Все 4 цифр должны быть разными."
     };
   }
 
@@ -92,7 +92,7 @@ function renderHistory() {
     li.appendChild(guessSpan);
     li.appendChild(resultSpan);
 
-    if (item.bulls === 4) {
+    if (item.cows >= 4) {
       li.classList.add("win");
     }
 
@@ -138,7 +138,7 @@ function checkGuess() {
   guessInput.value = "";
   guessInput.focus();
 
-  if (bulls === 4) {
+  if (cows >= 4) {
     isGameOver = true;
     showMessage(`Победа! Угадано за ${attempts} попыток.`, "success");
     guessInput.disabled = true;
