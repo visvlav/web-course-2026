@@ -132,7 +132,7 @@
        let y=head.y+this.direction.y;
        const out= cell.x < 0 || cell.y < 0 ||
         cell.x >= size || cell.y >= size
-        if(outside&& this.#wallpassleft>0){
+        if(out&& this.#wallpassleft>0){
           this.#wallpassleft-=1;
           x=(x+size)%size;
           y=(y+size)%size;
@@ -143,7 +143,7 @@
     #checkCollision(cell, willGrow) {
       const hitsWall =
         cell.x < 0 || cell.y < 0 ||
-        cell.x >= this.#gridSize || cell.y >= this.#gridSize;
+        cell.x >= this.size || cell.y >= this.size;
       if (hitsWall) return true;
       const bodyToCheck = willGrow ? this.#snake : this.#snake.slice(0, -1);
       return bodyToCheck.some((segment) => isSameCell(segment, cell));
