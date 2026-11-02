@@ -2,8 +2,6 @@ const API_URL = "https://jsonplaceholder.typicode.com/posts";
 const PAGE_SIZE = 10;
 const SCROLL_THRESHOLD = 200;
 const DEBOUNCE_DELAY = 300;
-
-// Единый массив всех загруженных постов и состояние приложения
 const state = {
   posts: [],
   page: 0,
@@ -20,9 +18,6 @@ const emptyMessageEl = document.getElementById("empty-message");
 const errorBlockEl = document.getElementById("error-block");
 const errorMessageEl = document.getElementById("error-message");
 const retryEl = document.getElementById("retry");
-
-// ---------- Загрузка данных ----------
-
 async function loadNextPage() {
   if (state.loading || !state.hasMore) return;
 
@@ -58,13 +53,9 @@ async function loadNextPage() {
     state.loading = false;
     updateStatus();
   }
-
-  // Если страница всё ещё не заполнена (например, после фильтра) — догружаем
   if (!errorBlockEl.classList.contains("hidden")) return;
   checkScrollPosition();
 }
-
-// ---------- Отрисовка ----------
 
 function render() {
   const filtered = filterPosts(state.posts, state.searchQuery);
@@ -91,7 +82,6 @@ function escapeHtml(text) {
     .replace(/'/g, "&#39;");
 }
 
-// Фильтрация идёт по уже загруженным данным, без запросов к серверу
 function filterPosts(posts, query) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return posts;
@@ -123,8 +113,6 @@ function hideError() {
   errorMessageEl.textContent = "";
 }
 
-// ---------- Поиск с дебаунсом ----------
-
 let searchDebounceId = null;
 
 function onSearchInput(event) {
@@ -138,8 +126,6 @@ function onSearchInput(event) {
   }, DEBOUNCE_DELAY);
 }
 
-// ---------- Бесконечный скролл ----------
-
 function checkScrollPosition() {
   const scrollBottom = window.innerHeight + window.scrollY;
   const pageHeight = document.documentElement.scrollHeight;
@@ -148,8 +134,6 @@ function checkScrollPosition() {
     loadNextPage();
   }
 }
-
-// ---------- Инициализация ----------
 
 function init() {
   searchEl.addEventListener("input", onSearchInput);
