@@ -3,6 +3,7 @@
 
 
   const CONFIG = Object.freeze({
+    Wall_Pass: 3,
     GRID_SIZE: 20,        
     CELL_SIZE: 20,       
     INITIAL_LENGTH: 3,    
@@ -47,6 +48,7 @@
     #inputQueue = [];
     #apple = null;
     #score = 0;
+    #wallpassleft=0;
     #gameOver = false;
     #won = false;
 
@@ -66,6 +68,7 @@
       this.#score = 0;
       this.#gameOver = false;
       this.#won = false;
+      this.#wallpassleft=CONFIG.Wall_Pass
       this.#spawnApple();
     }
     setDirection(newDirection) {
@@ -124,7 +127,17 @@
 
     #getNextHead() {
       const head = this.#snake[0];
-      return { x: head.x + this.#direction.x, y: head.y + this.#direction.y };
+      const size=this.#gridSize;
+      let x=head.x+this.direction.x;
+       let y=head.y+this.direction.y;
+       const out= cell.x < 0 || cell.y < 0 ||
+        cell.x >= size || cell.y >= size
+        if(outside&& this.#wallpassleft>0){
+          this.#wallpassleft-=1;
+          x=(x+size)%size;
+          y=(y+size)%size;
+        }
+        return{x,y}
     }
 
     #checkCollision(cell, willGrow) {
