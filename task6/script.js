@@ -116,6 +116,7 @@
         apple: this.#apple ? { ...this.#apple } : null,
         score: this.#score,
         gameOver: this.#gameOver,
+        wallPassesLeft: this.#wallpassleft,
         won: this.#won,
       };
     }
@@ -218,8 +219,7 @@
       this.#drawField(state.gridSize);
       this.#drawApple(state.apple);
       this.#drawSnake(state.snake);
-      this.#drawScore(state.score);
-
+      this.#scoreElement.textContent = `${state.score} | Проходов: ${state.wallPassesLeft}`;
       if (state.gameOver) {
         this.#drawGameOver(state);
       }
