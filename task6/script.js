@@ -68,7 +68,7 @@
       this.#score = 0;
       this.#gameOver = false;
       this.#won = false;
-      this.#wallpassleft=CONFIG.Wall_Pass
+      this.#wallpassleft = CONFIG.Wall_Pass;
       this.#spawnApple();
     }
     setDirection(newDirection) {
@@ -125,25 +125,25 @@
       }
     }
 
-    #getNextHead() {
-      const head = this.#snake[0];
-      const size=this.#gridSize;
-      let x=head.x+this.direction.x;
-       let y=head.y+this.direction.y;
-       const out= cell.x < 0 || cell.y < 0 ||
-        cell.x >= size || cell.y >= size
-        if(out&& this.#wallpassleft>0){
-          this.#wallpassleft-=1;
-          x=(x+size)%size;
-          y=(y+size)%size;
-        }
-        return{x,y}
-    }
+  #getNextHead() {
+  const head = this.#snake[0];
+  const size = this.#gridSize;
+  let x = head.x + this.#direction.x;
+  let y = head.y + this.#direction.y;
+  const outside = x < 0 || y < 0 || x >= size || y >= size;
+  if (outside && this.#wallpassleft > 0) {
+    this.#wallpassleft -= 1;
+    x = (x + size) % size;
+    y = (y + size) % size;
+  }
+
+  return { x, y };
+}
 
     #checkCollision(cell, willGrow) {
       const hitsWall =
         cell.x < 0 || cell.y < 0 ||
-        cell.x >= this.size || cell.y >= this.size;
+        cell.x >= this.#gridSize || cell.y >= this.#gridSize;
       if (hitsWall) return true;
       const bodyToCheck = willGrow ? this.#snake : this.#snake.slice(0, -1);
       return bodyToCheck.some((segment) => isSameCell(segment, cell));
