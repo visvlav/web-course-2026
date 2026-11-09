@@ -117,7 +117,7 @@ let searchDebounceId = null;
 
 function onSearchInput(event) {
   const value = event.target.value;
-
+   
   clearTimeout(searchDebounceId);
   searchDebounceId = setTimeout(() => {
     state.searchQuery = value;
