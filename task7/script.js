@@ -1,6 +1,7 @@
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
 const PAGE_SIZE = 10;
 const SCROLL_THRESHOLD = 200;
+const DEBOUNCE_FOR_5=2000;
 const DEBOUNCE_DELAY = 300;
 const state = {
   posts: [],
@@ -117,13 +118,13 @@ let searchDebounceId = null;
 
 function onSearchInput(event) {
   const value = event.target.value;
-   
+  const delay= value.trim().length<=5? DEBOUNCE_FOR_5 :DEBOUNCE_DELAY
   clearTimeout(searchDebounceId);
   searchDebounceId = setTimeout(() => {
     state.searchQuery = value;
     render();
     checkScrollPosition();
-  }, DEBOUNCE_DELAY);
+  }, delay);
 }
 
 function checkScrollPosition() {
