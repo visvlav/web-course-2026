@@ -1,147 +1,215 @@
-const API_URL = "https://jsonplaceholder.typicode.com/posts";
-const PAGE_SIZE = 10;
-const SCROLL_THRESHOLD = 200;
-const DEBOUNCE_FOR_5=2000;
-const DEBOUNCE_DELAY = 300;
-const state = {
-  posts: [],
-  page: 0,
-  loading: false,
-  hasMore: true,
-  searchQuery: "",
-};
+(function () {
+  "use strict";
 
-const postsEl = document.getElementById("posts");
-const searchEl = document.getElementById("search");
-const loaderEl = document.getElementById("loader");
-const endMessageEl = document.getElementById("end-message");
-const emptyMessageEl = document.getElementById("empty-message");
-const errorBlockEl = document.getElementById("error-block");
-const errorMessageEl = document.getElementById("error-message");
-const retryEl = document.getElementById("retry");
-async function loadNextPage() {
-  if (state.loading || !state.hasMore) return;
+  class PostsModel {
+    constructor() {
+      this.apiUrl = "https://jsonplaceholder.typicode.com/posts";
+      this.pageSize = 10;
 
-  state.loading = true;
-  hideError();
-  updateStatus();
-
-  const start = state.page * PAGE_SIZE;
-
-  try {
-    const response = await fetch(`${API_URL}?_start=${start}&_limit=${PAGE_SIZE}`);
-
-    if (!response.ok) {
-      throw new Error(`сервер вернул статус ${response.status}`);
+      this.posts = [];
+      this.page = 0;
+      this.searchQuery = "";
+      this.loading = false;
+      this.hasMore = true;
+      this.hasError = false;
+      this.errorMessage = "";
     }
 
-    const data = await response.json();
+    canLoad() {
+      return !this.loading && this.hasMore;
+    }
 
-    if (data.length === 0) {
-      state.hasMore = false;
-    } else {
-      state.posts.push(...data);
-      state.page += 1;
-      if (data.length < PAGE_SIZE) {
-        state.hasMore = false;
+    async loadNextPage() {
+      this.loading = true;
+      this.hasError = false;
+      this.errorMessage = "";
+
+      const start = this.page * this.pageSize;
+
+      try {
+        const response = await fetch(`${this.apiUrl}?_start=${start}&_limit=${this.pageSize}`);
+
+        if (!response.ok) {
+          throw new Error(`сервер вернул статус ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.length === 0) {
+          this.hasMore = false;
+        } else {
+          this.posts.push(...data);
+          this.page += 1;
+          if (data.length < this.pageSize) {
+            this.hasMore = false;
+          }
+        }
+      } catch (error) {
+        this.hasError = true;
+        this.errorMessage = `Не удалось загрузить посты: ${error.message}`;
+      } finally {
+        this.loading = false;
       }
     }
 
-    render();
-  } catch (error) {
-    showError(`Не удалось загрузить посты: ${error.message}`);
-  } finally {
-    state.loading = false;
-    updateStatus();
+    setSearchQuery(query) {
+      this.searchQuery = query;
+    }
+
+    getFilteredPosts() {
+      const normalized = this.searchQuery.trim().toLowerCase();
+      if (!normalized) return this.posts;
+      return this.posts.filter((post) => post.title.toLowerCase().includes(normalized));
+    }
+
+    getStatus() {
+      return {
+        loading: this.loading,
+        hasMore: this.hasMore,
+        hasError: this.hasError,
+        errorMessage: this.errorMessage,
+        totalCount: this.posts.length,
+        visibleCount: this.getFilteredPosts().length,
+      };
+    }
   }
-  if (!errorBlockEl.classList.contains("hidden")) return;
-  checkScrollPosition();
-}
 
-function render() {
-  const filtered = filterPosts(state.posts, state.searchQuery);
-  postsEl.innerHTML = filtered.map(createPostCard).join("");
-  updateStatus();
-}
+  class PostsView {
+    constructor() {
+      this.postsEl = document.getElementById("posts");
+      this.searchEl = document.getElementById("search");
+      this.loaderEl = document.getElementById("loader");
+      this.endMessageEl = document.getElementById("end-message");
+      this.emptyMessageEl = document.getElementById("empty-message");
+      this.errorBlockEl = document.getElementById("error-block");
+      this.errorMessageEl = document.getElementById("error-message");
+      this.retryEl = document.getElementById("retry");
 
-function createPostCard(post) {
-  return `
-    <article class="post-card">
-      <span class="meta">Автор #${post.userId} · Пост #${post.id}</span>
-      <h2>${escapeHtml(post.title)}</h2>
-      <p>${escapeHtml(post.body)}</p>
-    </article>
-  `;
-}
+      this.scrollThreshold = 200;
+    }
 
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+    escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
 
-function filterPosts(posts, query) {
-  const normalized = query.trim().toLowerCase();
-  if (!normalized) return posts;
-  return posts.filter((post) => post.title.toLowerCase().includes(normalized));
-}
+    createPostCard(post) {
+      return `
+        <article class="post-card">
+          <span class="meta">Автор #${post.userId} · Пост #${post.id}</span>
+          <h2>${this.escapeHtml(post.title)}</h2>
+          <p>${this.escapeHtml(post.body)}</p>
+        </article>
+      `;
+    }
 
-function updateStatus() {
-  const hasError = !errorBlockEl.classList.contains("hidden");
-  const visibleCount = filterPosts(state.posts, state.searchQuery).length;
+    renderPosts(posts) {
+      this.postsEl.innerHTML = posts.map((post) => this.createPostCard(post)).join("");
+    }
 
-  loaderEl.classList.toggle("hidden", !state.loading);
-  endMessageEl.classList.toggle(
-    "hidden",
-    state.hasMore || state.loading || hasError || state.posts.length === 0
-  );
-  emptyMessageEl.classList.toggle(
-    "hidden",
-    visibleCount > 0 || state.loading || hasError || state.posts.length === 0
-  );
-}
+    updateStatus(status) {
+      const { loading, hasMore, hasError, errorMessage, totalCount, visibleCount } = status;
 
-function showError(message) {
-  errorMessageEl.textContent = message;
-  errorBlockEl.classList.remove("hidden");
-}
+      this.loaderEl.classList.toggle("hidden", !loading);
 
-function hideError() {
-  errorBlockEl.classList.add("hidden");
-  errorMessageEl.textContent = "";
-}
+      this.endMessageEl.classList.toggle(
+        "hidden",
+        hasMore || loading || hasError || totalCount === 0
+      );
 
-let searchDebounceId = null;
+      this.emptyMessageEl.classList.toggle(
+        "hidden",
+        visibleCount > 0 || loading || hasError || totalCount === 0
+      );
 
-function onSearchInput(event) {
-  const value = event.target.value;
-  const delay= value.trim().length<=5? DEBOUNCE_FOR_5 :DEBOUNCE_DELAY
-  clearTimeout(searchDebounceId);
-  searchDebounceId = setTimeout(() => {
-    state.searchQuery = value;
-    render();
-    checkScrollPosition();
-  }, delay);
-}
+      this.errorMessageEl.textContent = hasError ? errorMessage : "";
+      this.errorBlockEl.classList.toggle("hidden", !hasError);
+    }
 
-function checkScrollPosition() {
-  const scrollBottom = window.innerHeight + window.scrollY;
-  const pageHeight = document.documentElement.scrollHeight;
+    isNearBottom() {
+      const scrollBottom = window.innerHeight + window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight;
+      return scrollBottom >= pageHeight - this.scrollThreshold;
+    }
 
-  if (scrollBottom >= pageHeight - SCROLL_THRESHOLD) {
-    loadNextPage();
+    bindSearch(handler) {
+      this.searchEl.addEventListener("input", (event) => handler(event.target.value));
+    }
+
+    bindScroll(handler) {
+      window.addEventListener("scroll", handler);
+    }
+
+    bindRetry(handler) {
+      this.retryEl.addEventListener("click", handler);
+    }
   }
-}
 
-function init() {
-  searchEl.addEventListener("input", onSearchInput);
-  window.addEventListener("scroll", checkScrollPosition);
-  retryEl.addEventListener("click", loadNextPage);
+  class PostsController {
+    constructor(model, view) {
+      this.model = model;
+      this.view = view;
 
-  loadNextPage();
-}
+      this.debounceDelay = 300;
+      this.debounceDelayShort = 2000;
+      this.shortQueryLength = 5;
+      this.searchDebounceId = null;
 
-init();
+      this.view.bindSearch((value) => this.handleSearch(value));
+      this.view.bindScroll(() => this.checkScrollPosition());
+      this.view.bindRetry(() => this.loadNextPage());
+    }
+
+    init() {
+      this.loadNextPage();
+    }
+
+    async loadNextPage() {
+      if (!this.model.canLoad()) return;
+
+      const loadingPromise = this.model.loadNextPage();
+      this.view.updateStatus(this.model.getStatus());
+
+      await loadingPromise;
+
+      this.render();
+
+      if (this.model.hasError) return;
+      this.checkScrollPosition();
+    }
+
+    render() {
+      this.view.renderPosts(this.model.getFilteredPosts());
+      this.view.updateStatus(this.model.getStatus());
+    }
+
+    handleSearch(value) {
+      const delay =
+        value.trim().length <= this.shortQueryLength
+          ? this.debounceDelayShort
+          : this.debounceDelay;
+
+      clearTimeout(this.searchDebounceId);
+      this.searchDebounceId = setTimeout(() => {
+        this.model.setSearchQuery(value);
+        this.render();
+        this.checkScrollPosition();
+      }, delay);
+    }
+
+    checkScrollPosition() {
+      if (this.view.isNearBottom()) {
+        this.loadNextPage();
+      }
+    }
+  }
+
+  const model = new PostsModel();
+  const view = new PostsView();
+  const controller = new PostsController(model, view);
+  controller.init();
+})();
