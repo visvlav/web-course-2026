@@ -1,16 +1,5 @@
 import { memo, useState } from 'react';
 
-/**
- * VIEW: одна задача.
- * Локально хранит только режим редактирования и черновик текста,
- * всё остальное приходит через props.
- *
- * @param {Object} props
- * @param {import('../model').Todo} props.todo
- * @param {(id: string) => void} props.onToggle
- * @param {(id: string) => void} props.onDelete
- * @param {(id: string, text: string) => void} props.onEdit
- */
 function TodoItem({ todo, onToggle, onDelete, onEdit }) {
   const { id, text, done } = todo;
   const [isEditing, setIsEditing] = useState(false);

@@ -19,20 +19,12 @@ import Filters from './components/Filters';
 import SortSelect from './components/SortSelect';
 import TodoList from './components/TodoList';
 
-/**
- * CONTROLLER (он же корень приложения).
- * Хранит состояние, вызывает функции MODEL и раздаёт данные во VIEW (components/) через props.
- * Обработчики обёрнуты в useCallback + функциональный setState -> ссылки стабильны,
- * поэтому React.memo в компонентах реально предотвращает лишние рендеры.
- */
 export default function App() {
-  // ленивая инициализация: чтение из localStorage один раз при загрузке
   const [todos, setTodos] = useState(loadTodos);
   const [filterId, setFilterId] = useState(FILTERS[0].id);
   const [sorterId, setSorterId] = useState(SORTERS[0].id);
   const [importState, setImportState] = useState({ loading: false, error: null });
 
-  // useEffect по назначению: синхронизация с localStorage при каждом изменении списка
   useEffect(() => {
     saveTodos(todos);
   }, [todos]);
@@ -49,7 +41,6 @@ export default function App() {
     setTodos((prev) => editTodo(prev, id, text));
   }, []);
 
-  // загрузка по клику — это обработчик, а не useEffect
   const onImport = useCallback(async () => {
     setImportState({ loading: true, error: null });
     try {
@@ -61,7 +52,6 @@ export default function App() {
     }
   }, []);
 
-  // useMemo: пересчёт только при изменении данных, фильтра или сортировки
   const visibleTodos = useMemo(
     () => selectVisible(todos, filterId, sorterId),
     [todos, filterId, sorterId]

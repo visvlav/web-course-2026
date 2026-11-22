@@ -1,14 +1,5 @@
 import { memo, useState } from 'react';
 
-/**
- * VIEW: форма добавления (поле, тип задачи, кнопка) + кнопка загрузки с API.
- * Текст в поле — локальный стейт формы, поэтому при наборе перерисовывается только она.
- *
- * @param {Object} props
- * @param {(text: string, done: boolean) => void} props.onAdd
- * @param {() => void} props.onImport
- * @param {{loading: boolean, error: string|null}} props.importState
- */
 function TodoForm({ onAdd, onImport, importState }) {
   const [text, setText] = useState('');
   const [done, setDone] = useState(false);

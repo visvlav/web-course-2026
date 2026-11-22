@@ -1,9 +1,5 @@
 import { memo } from 'react';
 
-/**
- * VIEW: счётчики.
- * @param {{ stats: {total: number, active: number, done: number} }} props
- */
 function Stats({ stats }) {
   const { total, active, done } = stats;
   return (
