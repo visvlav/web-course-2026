@@ -2,6 +2,7 @@ import useTodos from './useTodos';
 import TodoForm from './components/TodoForm';
 import Filters from './components/Filters';
 import SortSelect from './components/SortSelect';
+import ImportButton from './components/ImportButton';
 import Stats from './components/Stats';
 import TodoList from './components/TodoList';
 
@@ -13,10 +14,13 @@ export default function App() {
     setFilter,
     sort,
     setSort,
+    loading,
+    error,
     addTodo,
     toggleTodo,
     deleteTodo,
     editTodo,
+    importTodos,
   } = useTodos();
 
   return (
@@ -25,6 +29,7 @@ export default function App() {
       <TodoForm onAdd={addTodo} />
       <Filters current={filter} onChange={setFilter} />
       <SortSelect current={sort} onChange={setSort} />
+      <ImportButton onImport={importTodos} loading={loading} error={error} />
       <Stats stats={stats} />
       <TodoList
         todos={visibleTodos}
