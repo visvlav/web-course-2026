@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { createTodo } from './todoModel';
 import TodoList from './components/TodoList';
+import TodoForm from './components/TodoForm';
 
 export default function App() {
   const [todos, setTodos] = useState([
     createTodo('Выучить React'),
     createTodo('Сделать лабу', true),
   ]);
-
+  const addTodo = (text, completed) =>
+    setTodos((prev) => [createTodo(text, completed), ...prev]);
   const toggleTodo = (id) =>
     setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
   const deleteTodo = (id) => setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -17,6 +19,7 @@ export default function App() {
   return (
     <>
       <h1>Todo-list</h1>
+      <TodoForm onAdd={addTodo} /> 
       <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onEdit={editTodo} />
     </>
   );
