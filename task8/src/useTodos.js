@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { createTodo, filterTodos, getStats } from './todoModel';
+import { createTodo, filterTodos, sortTodos, getStats } from './todoModel';
+
 export default function useTodos() {
   const [todos, setTodos] = useState([
     createTodo('Выучить React'),
     createTodo('Сделать лабу', true),
   ]);
   const [filter, setFilter] = useState('all');
+  const [sort, setSort] = useState('newest');
 
   const addTodo = (text, completed) =>
     setTodos((prev) => [createTodo(text, completed), ...prev]);
@@ -16,10 +18,12 @@ export default function useTodos() {
     setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, text: text.trim() } : t)));
 
   return {
-    visibleTodos: filterTodos(todos, filter),
+    visibleTodos: sortTodos(filterTodos(todos, filter), sort),
     stats: getStats(todos),
     filter,
     setFilter,
+    sort,
+    setSort,
     addTodo,
     toggleTodo,
     deleteTodo,

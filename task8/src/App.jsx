@@ -1,6 +1,7 @@
 import useTodos from './useTodos';
 import TodoForm from './components/TodoForm';
 import Filters from './components/Filters';
+import SortSelect from './components/SortSelect';
 import Stats from './components/Stats';
 import TodoList from './components/TodoList';
 
@@ -10,6 +11,8 @@ export default function App() {
     stats,
     filter,
     setFilter,
+    sort,
+    setSort,
     addTodo,
     toggleTodo,
     deleteTodo,
@@ -21,6 +24,7 @@ export default function App() {
       <h1>Todo-list</h1>
       <TodoForm onAdd={addTodo} />
       <Filters current={filter} onChange={setFilter} />
+      <SortSelect current={sort} onChange={setSort} />
       <Stats stats={stats} />
       <TodoList
         todos={visibleTodos}
