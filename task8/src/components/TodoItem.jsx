@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 /**
  * @param {{id:string,text:string,completed:boolean}} todo
@@ -6,7 +6,7 @@ import { useState } from 'react';
  * @param {(id:string)=>void} onDelete
  * @param {(id:string, text:string)=>void} onEdit
  */
-export default function TodoItem({ todo, onToggle, onDelete, onEdit }) {
+function TodoItem({ todo, onToggle, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(todo.text);
 
@@ -32,3 +32,5 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }) {
     </li>
   );
 }
+
+export default memo(TodoItem);

@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { FILTERS } from '../todoModel';
 
 /**
  * @param {string} current 
- * @param {(key:string)=>void} onChange 
+ * @param {(key:string)=>void} 
  */
-export default function Filters({ current, onChange }) {
+function Filters({ current, onChange }) { 
   return (
     <div className="filters">
       {Object.entries(FILTERS).map(([key, { label }]) => (
@@ -19,3 +20,5 @@ export default function Filters({ current, onChange }) {
     </div>
   );
 }
+
+export default memo(Filters);

@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { SORTS } from '../todoModel';
 
 /**
  * @param {string} current 
  * @param {(key:string)=>void} onChange 
  */
-export default function SortSelect({ current, onChange }) {
+function SortSelect({ current, onChange }) {
   return (
     <label>
       Сортировка:{' '}
@@ -18,3 +19,5 @@ export default function SortSelect({ current, onChange }) {
     </label>
   );
 }
+
+export default memo(SortSelect);
