@@ -30,3 +30,11 @@ export const SORTS = {
 export function sortTodos(todos, sortKey) {
   return [...todos].sort(SORTS[sortKey].compare);
 }
+export function fromApiTodo(item, index = 0) {
+  return {
+    id: crypto.randomUUID(),
+    text: item.title,
+    completed: item.completed,
+    createdAt: Date.now() - index,
+  };
+}
