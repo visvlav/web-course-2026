@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { createTodo, filterTodos, getStats } from './todoModel';
-import { createTodo } from './todoModel';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import Filters from './components/Filters';
