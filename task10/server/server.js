@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/categories', require('./src/routes/categories'));
+app.use('/transactions', require('./src/routes/transactions'));
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Маршрут не найден' });
