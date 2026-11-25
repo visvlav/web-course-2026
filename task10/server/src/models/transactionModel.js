@@ -27,5 +27,21 @@ function getAll({ category_id, type, from, to } = {}) {
 function getById(id) {
   return db.prepare(BASE_SELECT + ' WHERE t.id = ?').get(id);
 }
+function create({ amount, category_id, date, comment }) {
+  const info = db
+    .prepare('INSERT INTO transactions (amount, category_id, date, comment) VALUES (?, ?, ?, ?)')
+    .run(amount, category_id, date, comment ?? null);
+  return getById(info.lastInsertRowid);
+}
 
-module.exports = { getAll, getById };
+function update(id, { amount, category_id, date, comment }) {
+  const info = db
+    .prepare('UPDATE transactions SET amount = ?, category_id = ?, date = ?, comment = ? WHERE id = ?')
+    .run(amount, category_id, date, comment ?? null, id);
+  return info.changes > 0 ? getById(id) : null;
+}
+
+function remove(id) {
+  return db.prepare('DELETE FROM transactions WHERE id = ?').run(id).changes > 0;
+}
+module.exports = { getAll, getById, create, update, remove };
