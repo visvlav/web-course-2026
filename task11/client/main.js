@@ -26,13 +26,29 @@ const toFilter = document.querySelector('#to-filter');
 const filterButton = document.querySelector('#filter-button');
 const resetButton = document.querySelector('#reset-filters');
 const transactionsList = document.querySelector('#transactions-list');
+const editForm = document.querySelector('#edit-form');
+const editAmountInput = document.querySelector('#edit-amount');
+const editCategoryInput = document.querySelector('#edit-category');
+const editDateInput = document.querySelector('#edit-date');
+const editCommentInput = document.querySelector('#edit-comment');
+const cancelEditButton = document.querySelector('#cancel-edit');
 
+let editingTransactionId = null;
 let categories = [];
 let transactions = [];
 
 async function loadCategories() {
     categories = await getCategories();
+
     renderCategories(categories);
+
+    editCategoryInput.innerHTML = categories
+        .map(category => `
+            <option value="${category.id}">
+                ${category.name}
+            </option>
+        `)
+        .join('');
 }
 
 async function loadTransactions() {
@@ -68,7 +84,38 @@ form.addEventListener('submit', async (event) => {
         alert(error.message);
     }
 });
+cancelEditButton.addEventListener('click', () => {
+    editForm.hidden = true;
+    editingTransactionId = null;
+});
+editForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
+    try {
+        const updatedTransaction = {
+            amount: Number(editAmountInput.value),
+            category_id: Number(editCategoryInput.value),
+            date: editDateInput.value,
+            comment: editCommentInput.value
+        };
+
+       console.log('ID редактируемой операции:', editingTransactionId);
+
+if (!Number.isInteger(editingTransactionId) || editingTransactionId <= 0) {
+    alert('Ошибка: ID операции не определён');
+    return;
+}
+
+await updateTransaction(editingTransactionId, updatedTransaction);
+
+        editForm.hidden = true;
+        editingTransactionId = null;
+
+        await loadTransactions();
+    } catch (error) {
+        alert(error.message);
+    }
+});
 filterButton.addEventListener('click', async () => {
     try {
         await loadTransactions();
@@ -89,7 +136,21 @@ resetButton.addEventListener('click', async () => {
         alert(error.message);
     }
 });
+function openEditForm(transaction) {
+    editingTransactionId = transaction.id;
 
+    editAmountInput.value = transaction.amount;
+    editCategoryInput.value = transaction.category_id;
+    editDateInput.value = transaction.date;
+    editCommentInput.value = transaction.comment || '';
+
+    editForm.hidden = false;
+
+    editForm.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+}
 transactionsList.addEventListener('click', async (event) => {
     const button = event.target.closest('button');
 
@@ -107,36 +168,14 @@ transactionsList.addEventListener('click', async (event) => {
         }
 
         if (action === 'edit') {
-            const transaction = transactions.find(item => item.id === id);
+    const transaction = transactions.find(item => item.id === id);
 
-            if (!transaction) {
-                return;
-            }
+    if (!transaction) {
+        return;
+    }
 
-            const amount = prompt('Введите новую сумму:', transaction.amount);
-            if (amount === null) return;
-
-            const categoryId = prompt(
-                'Введите ID категории:',
-                transaction.category_id
-            );
-            if (categoryId === null) return;
-
-            const date = prompt('Введите дату в формате ГГГГ-ММ-ДД:', transaction.date);
-            if (date === null) return;
-
-            const comment = prompt('Введите комментарий:', transaction.comment || '');
-            if (comment === null) return;
-
-            await updateTransaction(id, {
-                amount: Number(amount),
-                category_id: Number(categoryId),
-                date,
-                comment
-            });
-
-            await loadTransactions();
-        }
+    openEditForm(transaction);
+}
     } catch (error) {
         alert(error.message);
     }
