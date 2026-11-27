@@ -105,6 +105,20 @@ if (!dateInput.value) {
     return;
 }
     try {
+        if (!editAmountInput.value || Number(editAmountInput.value) <= 0) {
+    alert('Введите сумму больше нуля');
+    return;
+}
+
+if (!editCategoryInput.value) {
+    alert('Выберите категорию');
+    return;
+}
+
+if (!editDateInput.value) {
+    alert('Укажите дату операции');
+    return;
+}
         const updatedTransaction = {
             amount: Number(editAmountInput.value),
             category_id: Number(editCategoryInput.value),
