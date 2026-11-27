@@ -1,7 +1,7 @@
 import {
     getCategories,
     getTransactions,
-     createCategory,
+    createCategory,
     createTransaction,
     updateTransaction,
     deleteTransaction
@@ -17,6 +17,7 @@ const form = document.querySelector('#transaction-form');
 const categoryForm = document.querySelector('#category-form');
 const categoryNameInput = document.querySelector('#category-name');
 const categoryTypeInput = document.querySelector('#category-type');
+
 const amountInput = document.querySelector('#amount');
 const categoryInput = document.querySelector('#category');
 const dateInput = document.querySelector('#date');
@@ -30,6 +31,7 @@ const toFilter = document.querySelector('#to-filter');
 const filterButton = document.querySelector('#filter-button');
 const resetButton = document.querySelector('#reset-filters');
 const transactionsList = document.querySelector('#transactions-list');
+
 const editForm = document.querySelector('#edit-form');
 const editAmountInput = document.querySelector('#edit-amount');
 const editCategoryInput = document.querySelector('#edit-category');
@@ -72,6 +74,21 @@ async function loadTransactions() {
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    if (!amountInput.value || Number(amountInput.value) <= 0) {
+        alert('Введите сумму больше нуля');
+        return;
+    }
+
+    if (!categoryInput.value) {
+        alert('Выберите категорию');
+        return;
+    }
+
+    if (!dateInput.value) {
+        alert('Укажите дату операции');
+        return;
+    }
+
     try {
         const transaction = {
             amount: Number(amountInput.value),
@@ -88,10 +105,7 @@ form.addEventListener('submit', async (event) => {
         alert(error.message);
     }
 });
-cancelEditButton.addEventListener('click', () => {
-    editForm.hidden = true;
-    editingTransactionId = null;
-});
+
 categoryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -112,37 +126,36 @@ categoryForm.addEventListener('submit', async (event) => {
         alert(error.message);
     }
 });
+
+cancelEditButton.addEventListener('click', () => {
+    editForm.hidden = true;
+    editingTransactionId = null;
+});
+
 editForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-if (!amountInput.value || Number(amountInput.value) <= 0) {
-    alert('Введите сумму больше нуля');
-    return;
-}
 
-if (!categoryInput.value) {
-    alert('Выберите категорию');
-    return;
-}
+    if (!editAmountInput.value || Number(editAmountInput.value) <= 0) {
+        alert('Введите сумму больше нуля');
+        return;
+    }
 
-if (!dateInput.value) {
-    alert('Укажите дату операции');
-    return;
-}
+    if (!editCategoryInput.value) {
+        alert('Выберите категорию');
+        return;
+    }
+
+    if (!editDateInput.value) {
+        alert('Укажите дату операции');
+        return;
+    }
+
+    if (!Number.isInteger(editingTransactionId) || editingTransactionId <= 0) {
+        alert('Ошибка: ID операции не определён');
+        return;
+    }
+
     try {
-        if (!editAmountInput.value || Number(editAmountInput.value) <= 0) {
-    alert('Введите сумму больше нуля');
-    return;
-}
-
-if (!editCategoryInput.value) {
-    alert('Выберите категорию');
-    return;
-}
-
-if (!editDateInput.value) {
-    alert('Укажите дату операции');
-    return;
-}
         const updatedTransaction = {
             amount: Number(editAmountInput.value),
             category_id: Number(editCategoryInput.value),
@@ -150,14 +163,7 @@ if (!editDateInput.value) {
             comment: editCommentInput.value
         };
 
-       console.log('ID редактируемой операции:', editingTransactionId);
-
-if (!Number.isInteger(editingTransactionId) || editingTransactionId <= 0) {
-    alert('Ошибка: ID операции не определён');
-    return;
-}
-
-await updateTransaction(editingTransactionId, updatedTransaction);
+        await updateTransaction(editingTransactionId, updatedTransaction);
 
         editForm.hidden = true;
         editingTransactionId = null;
@@ -167,6 +173,7 @@ await updateTransaction(editingTransactionId, updatedTransaction);
         alert(error.message);
     }
 });
+
 filterButton.addEventListener('click', async () => {
     try {
         await loadTransactions();
@@ -187,6 +194,7 @@ resetButton.addEventListener('click', async () => {
         alert(error.message);
     }
 });
+
 function openEditForm(transaction) {
     editingTransactionId = transaction.id;
 
@@ -202,6 +210,7 @@ function openEditForm(transaction) {
         block: 'center'
     });
 }
+
 transactionsList.addEventListener('click', async (event) => {
     const button = event.target.closest('button');
 
@@ -219,14 +228,14 @@ transactionsList.addEventListener('click', async (event) => {
         }
 
         if (action === 'edit') {
-    const transaction = transactions.find(item => item.id === id);
+            const transaction = transactions.find(item => item.id === id);
 
-    if (!transaction) {
-        return;
-    }
+            if (!transaction) {
+                return;
+            }
 
-    openEditForm(transaction);
-}
+            openEditForm(transaction);
+        }
     } catch (error) {
         alert(error.message);
     }
