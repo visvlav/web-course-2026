@@ -1,6 +1,7 @@
 import {
     getCategories,
     getTransactions,
+     createCategory,
     createTransaction,
     updateTransaction,
     deleteTransaction
@@ -13,6 +14,9 @@ import {
 } from './ui.js';
 
 const form = document.querySelector('#transaction-form');
+const categoryForm = document.querySelector('#category-form');
+const categoryNameInput = document.querySelector('#category-name');
+const categoryTypeInput = document.querySelector('#category-type');
 const amountInput = document.querySelector('#amount');
 const categoryInput = document.querySelector('#category');
 const dateInput = document.querySelector('#date');
@@ -87,6 +91,26 @@ form.addEventListener('submit', async (event) => {
 cancelEditButton.addEventListener('click', () => {
     editForm.hidden = true;
     editingTransactionId = null;
+});
+categoryForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const name = categoryNameInput.value.trim();
+    const type = categoryTypeInput.value;
+
+    if (!name) {
+        alert('Введите название категории');
+        return;
+    }
+
+    try {
+        await createCategory({ name, type });
+
+        categoryForm.reset();
+        await loadCategories();
+    } catch (error) {
+        alert(error.message);
+    }
 });
 editForm.addEventListener('submit', async (event) => {
     event.preventDefault();

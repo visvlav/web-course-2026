@@ -39,7 +39,26 @@
                 <button type="submit">Добавить</button>
             </form>
         </section>
+        <section>
+            <h2>Создать категорию</h2>
 
+            <form id="category-form" novalidate>
+                <label>
+                    Название категории
+                    <input type="text" id="category-name" required>
+                </label>
+
+                <label>
+                    Тип категории
+                    <select id="category-type" required>
+                        <option value="expense">Расход</option>
+                        <option value="income">Доход</option>
+                    </select>
+                </label>
+
+                <button type="submit">Создать категорию</button>
+            </form>
+        </section>
         <section>
             <h2>Фильтры</h2>
 
