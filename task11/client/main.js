@@ -90,7 +90,20 @@ cancelEditButton.addEventListener('click', () => {
 });
 editForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+if (!amountInput.value || Number(amountInput.value) <= 0) {
+    alert('Введите сумму больше нуля');
+    return;
+}
 
+if (!categoryInput.value) {
+    alert('Выберите категорию');
+    return;
+}
+
+if (!dateInput.value) {
+    alert('Укажите дату операции');
+    return;
+}
     try {
         const updatedTransaction = {
             amount: Number(editAmountInput.value),
