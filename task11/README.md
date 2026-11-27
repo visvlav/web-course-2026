@@ -34,4 +34,16 @@ npm start
 - `GET /categories` — получить категории.
 - `POST /categories` — добавить категорию.
 
-Скриншоты успешных запросов GET, POST, PUT и DELETE добавляются в этот раздел.
+## Проверка API в Thunder Client
+
+### GET — получение списка транзакций
+![GET transactions](screenshots/get-transactions.png)
+
+### POST — создание транзакции
+![POST transaction](screenshots/post-transaction.png)
+
+### PUT — изменение транзакции
+![PUT transaction](screenshots/put-transaction.png)
+
+### DELETE — удаление транзакции
+![DELETE transaction](screenshots/delete-transaction.png)
