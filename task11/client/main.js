@@ -39,9 +39,41 @@ const editDateInput = document.querySelector('#edit-date');
 const editCommentInput = document.querySelector('#edit-comment');
 const cancelEditButton = document.querySelector('#cancel-edit');
 
+const FILTERS_STORAGE_KEY = 'zen-money-filters';
+
 let editingTransactionId = null;
 let categories = [];
 let transactions = [];
+
+function saveFilters() {
+    const filters = {
+        type: typeFilter.value,
+        category_id: categoryFilter.value,
+        from: fromFilter.value,
+        to: toFilter.value
+    };
+
+    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
+}
+
+function restoreFilters() {
+    const savedFilters = localStorage.getItem(FILTERS_STORAGE_KEY);
+
+    if (!savedFilters) {
+        return;
+    }
+
+    try {
+        const filters = JSON.parse(savedFilters);
+
+        typeFilter.value = filters.type || '';
+        categoryFilter.value = filters.category_id || '';
+        fromFilter.value = filters.from || '';
+        toFilter.value = filters.to || '';
+    } catch (error) {
+        localStorage.removeItem(FILTERS_STORAGE_KEY);
+    }
+}
 
 async function loadCategories() {
     categories = await getCategories();
@@ -55,6 +87,15 @@ async function loadCategories() {
             </option>
         `)
         .join('');
+
+    // Если сохранённая категория больше не существует — сбрасываем фильтр.
+    const selectedCategoryExists = categories.some(
+        category => String(category.id) === categoryFilter.value
+    );
+
+    if (categoryFilter.value && !selectedCategoryExists) {
+        categoryFilter.value = '';
+    }
 }
 
 async function loadTransactions() {
@@ -176,6 +217,7 @@ editForm.addEventListener('submit', async (event) => {
 
 filterButton.addEventListener('click', async () => {
     try {
+        saveFilters();
         await loadTransactions();
     } catch (error) {
         alert(error.message);
@@ -187,6 +229,8 @@ resetButton.addEventListener('click', async () => {
     categoryFilter.value = '';
     fromFilter.value = '';
     toFilter.value = '';
+
+    localStorage.removeItem(FILTERS_STORAGE_KEY);
 
     try {
         await loadTransactions();
@@ -245,6 +289,7 @@ async function init() {
     try {
         dateInput.value = new Date().toISOString().slice(0, 10);
 
+        restoreFilters();
         await loadCategories();
         await loadTransactions();
     } catch (error) {
